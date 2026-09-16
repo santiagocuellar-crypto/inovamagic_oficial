@@ -1,0 +1,39 @@
+{
+  "name": "proyecto-grado-ecommerce-multitenant",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "8.0"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+
+  "forwardPorts": [4200, 5000, 5001, 1433],
+  "portsAttributes": {
+    "4200": { "label": "Angular (frontend)" },
+    "5000": { "label": "API HTTP" },
+    "5001": { "label": "API HTTPS" },
+    "1433": { "label": "SQL Server" }
+  },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "angular.ng-template",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-mssql.mssql"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode"
+}

@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+    volumes:
+      - ../..:/workspace:cached
+    command: sleep infinity
+    network_mode: service:sqlserver
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "ProyectoGrado#2026"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+volumes:
+  sqlserver-data:

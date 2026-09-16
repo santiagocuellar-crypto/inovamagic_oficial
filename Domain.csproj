@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ProyectoGrado.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    Domain NO depende de ningun otro proyecto.
+    Aqui van: Entidades, Value Objects, Enums, Excepciones de dominio,
+    Interfaces de repositorio (los contratos, no la implementacion).
+    Nunca debe referenciar Entity Framework, ASP.NET Core ni nada de infraestructura.
+  -->
+
+</Project>
