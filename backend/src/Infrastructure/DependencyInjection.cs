@@ -20,6 +20,9 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+        services.AddScoped<IApplicationDbContext>(provider =>
+            provider.GetRequiredService<ApplicationDbContext>());
+
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -33,6 +36,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentTenantService, CurrentTenantService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
 
         services.AddAuthentication(options =>
             {
