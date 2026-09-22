@@ -24,6 +24,8 @@ public class ApplicationDbContext
     public DbSet<Producto> Productos => Set<Producto>();
     public DbSet<ProductoVariante> ProductoVariantes => Set<ProductoVariante>();
     public DbSet<ProductoImagen> ProductoImagenes => Set<ProductoImagen>();
+    public DbSet<Pedido> Pedidos => Set<Pedido>();
+    public DbSet<PedidoItem> PedidoItems => Set<PedidoItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -44,6 +46,24 @@ public class ApplicationDbContext
         builder.Entity<Producto>()
             .Property(p => p.Precio)
             .HasColumnType("decimal(18,2)");
+
+        builder.Entity<Pedido>()
+            .HasMany(p => p.Items)
+            .WithOne(i => i.Pedido)
+            .HasForeignKey(i => i.PedidoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Pedido>()
+            .Property(p => p.Total)
+            .HasColumnType("decimal(18,2)");
+
+        builder.Entity<PedidoItem>()
+            .Property(i => i.PrecioUnitario)
+            .HasColumnType("decimal(18,2)");
+
+        builder.Entity<Pedido>()
+            .Property(p => p.Estado)
+            .HasConversion<string>();
 
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
