@@ -40,9 +40,21 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        if (builder.Environment.IsDevelopment())
+        {
+            // En desarrollo aceptamos cualquier origen (localhost, Codespaces, etc.)
+            // porque la URL publica del Codespace cambia cada tanto.
+            policy.SetIsOriginAllowed(_ => true)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
+        else
+        {
+            policy.WithOrigins("https://tu-dominio-de-produccion.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
     });
 });
 

@@ -1,0 +1,33 @@
+<div class="auth-page">
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="enviar()">
+    <h1>Crea tu tienda</h1>
+    <p class="subtitulo">Regístrate y empieza a vender en minutos</p>
+
+    @if (errorMensaje()) {
+      <div class="mensaje-error">{{ errorMensaje() }}</div>
+    }
+
+    <label>
+      Nombre de tu negocio
+      <input type="text" formControlName="nombreTenant" placeholder="Mi Boutique" />
+    </label>
+
+    <label>
+      Correo
+      <input type="email" formControlName="email" placeholder="tucorreo@ejemplo.com" />
+    </label>
+
+    <label>
+      Contraseña
+      <input type="password" formControlName="password" placeholder="Mínimo 8 caracteres" />
+    </label>
+
+    <button type="submit" [disabled]="cargando()">
+      {{ cargando() ? 'Creando cuenta...' : 'Crear cuenta' }}
+    </button>
+
+    <p class="enlace-secundario">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </form>
+</div>
