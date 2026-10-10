@@ -1,0 +1,45 @@
+<div class="carrito-pagina">
+  <a class="volver" [routerLink]="['/tienda', tenantId]">← Seguir comprando</a>
+  <h1>Tu carrito</h1>
+
+  @if (carritoService.items().length === 0) {
+    <p class="vacio">Tu carrito está vacío todavía.</p>
+  } @else {
+    <div class="lista-items">
+      @for (item of carritoService.items(); track item.productoId + item.talla) {
+        <div class="item-fila">
+          <div class="item-imagen">
+            @if (item.imagenUrl) {
+              <img [src]="item.imagenUrl" [alt]="item.nombre" />
+            } @else {
+              <div class="sin-imagen"></div>
+            }
+          </div>
+
+          <div class="item-info">
+            <strong>{{ item.nombre }}</strong>
+            <span class="talla">Talla: {{ item.talla }}</span>
+            <span class="precio">{{ item.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+          </div>
+
+          <div class="item-cantidad">
+            <button type="button" (click)="cambiarCantidad(item.productoId, item.talla, item.cantidad - 1)">-</button>
+            <span>{{ item.cantidad }}</span>
+            <button type="button" (click)="cambiarCantidad(item.productoId, item.talla, item.cantidad + 1)">+</button>
+          </div>
+
+          <button type="button" class="quitar" (click)="quitar(item.productoId, item.talla)">Quitar</button>
+        </div>
+      }
+    </div>
+
+    <div class="resumen">
+      <span>Total</span>
+      <strong>{{ carritoService.totalPrecio() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
+    </div>
+
+    <a class="boton-checkout" [routerLink]="['/tienda', tenantId, 'checkout']">
+      Continuar con la compra
+    </a>
+  }
+</div>

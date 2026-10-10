@@ -1,0 +1,59 @@
+@if (pedidoConfirmado()) {
+  <div class="confirmacion">
+    <h1>¡Pedido realizado! 🎉</h1>
+    <p>Tu número de pedido es:</p>
+    <code>{{ pedidoConfirmado() }}</code>
+    <p>Pronto te contactaremos para confirmar la entrega.</p>
+    <a [routerLink]="['/tienda', tenantId]">Volver a la tienda</a>
+  </div>
+} @else {
+  <div class="checkout-pagina">
+    <a class="volver" [routerLink]="['/tienda', tenantId, 'carrito']">← Volver al carrito</a>
+    <h1>Finalizar compra</h1>
+
+    @if (error()) {
+      <div class="mensaje-error">{{ error() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="enviar()">
+      <label>
+        Nombre completo
+        <input type="text" formControlName="clienteNombre" />
+      </label>
+
+      <label>
+        Teléfono
+        <input type="tel" formControlName="clienteTelefono" placeholder="300 123 4567" />
+      </label>
+
+      <label>
+        Correo (opcional)
+        <input type="email" formControlName="clienteEmail" />
+      </label>
+
+      <label>
+        Dirección
+        <input type="text" formControlName="direccionCalle" placeholder="Calle 10 # 20-30" />
+      </label>
+
+      <label>
+        Ciudad
+        <input type="text" formControlName="direccionCiudad" />
+      </label>
+
+      <label>
+        Notas adicionales (opcional)
+        <input type="text" formControlName="direccionNotas" placeholder="Apartamento, punto de referencia..." />
+      </label>
+
+      <div class="resumen-total">
+        <span>Total a pagar</span>
+        <strong>{{ carritoService.totalPrecio() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
+      </div>
+
+      <button type="submit" [disabled]="enviando()">
+        {{ enviando() ? 'Enviando pedido...' : 'Confirmar pedido' }}
+      </button>
+    </form>
+  </div>
+}

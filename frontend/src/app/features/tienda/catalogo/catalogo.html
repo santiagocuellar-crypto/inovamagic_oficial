@@ -1,0 +1,61 @@
+<div class="tienda-header">
+  <h1>Catálogo</h1>
+  <a class="carrito-link" [routerLink]="['/tienda', tenantId, 'carrito']">
+    🛒 Carrito ({{ carritoService.totalItems() }})
+  </a>
+</div>
+
+@if (cargando()) {
+  <p class="estado-mensaje">Cargando productos...</p>
+}
+
+@if (error()) {
+  <p class="estado-mensaje error">{{ error() }}</p>
+}
+
+@if (!cargando() && productos().length === 0 && !error()) {
+  <p class="estado-mensaje">Esta tienda todavía no tiene productos publicados.</p>
+}
+
+<div class="productos-grid">
+  @for (producto of productos(); track producto.id) {
+    <div class="producto-card">
+      <div class="producto-imagen">
+        @if (producto.imagenesUrls[0]) {
+          <img [src]="producto.imagenesUrls[0]" [alt]="producto.nombre" />
+        } @else {
+          <div class="sin-imagen">Sin foto</div>
+        }
+      </div>
+
+      <div class="producto-info">
+        @if (producto.categoriaNombre) {
+          <span class="categoria-tag">{{ producto.categoriaNombre }}</span>
+        }
+        <h3>{{ producto.nombre }}</h3>
+        <p class="descripcion">{{ producto.descripcion }}</p>
+        <p class="precio">{{ producto.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</p>
+
+        @if (producto.variantes.length > 0) {
+          <div class="tallas">
+            @for (variante of producto.variantes; track variante.talla) {
+              <button
+                type="button"
+                class="talla-boton"
+                [class.seleccionada]="tallaDe(producto.id) === variante.talla"
+                [disabled]="variante.stock === 0"
+                (click)="seleccionarTalla(producto.id, variante.talla)"
+              >
+                {{ variante.talla }}
+              </button>
+            }
+          </div>
+        }
+
+        <button type="button" class="boton-agregar" (click)="agregarAlCarrito(producto)">
+          Agregar al carrito
+        </button>
+      </div>
+    </div>
+  }
+</div>

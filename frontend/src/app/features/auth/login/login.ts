@@ -41,7 +41,7 @@ export class Login {
       .subscribe({
         next: () => {
           this.cargando.set(false);
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/panel');
         },
         error: (err) => {
           this.cargando.set(false);
